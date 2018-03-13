@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery.js"></script>
+    <script>
+        window.onload = function () {
+            var eleMenus = $("#choMenu a").bind('click', function (event) {
+                // console.log(history);
+                // console.log(location);
+                var query = this.href.split("?")[1];
+                if (history.pushState && query) {
+                    /**
+                     * ajax载入
+                     */
+                        //history处理
+                    var title = "history练习→" + $(this).text().replace(/\d+$/, '');
+                    document.title = title;
+                    if (event && /\d/.test(event.button)) {
+                        history.pushState({title: title}, title, location.href.split("?")[0] + "?" + query);
+                    }
+                }
+                return false;
+            });
+            //console.log(eleMenus);
+            var fnHashTrigger = function (target) {
+                var query = location.href.split("?")[1], eleTarget = target || null;
+                if (typeof query == "undefined") {
+                    if (eleTarget = eleMenus.get(0)) {
+                        // 如果没有查询字符，则使用第一个导航元素的查询字符内容
+                        history.replaceState(null, document.title, location.href.split("#")[0] + "?" + eleTarget.href.split("?")[1]) + location.hash;
+                        fnHashTrigger(eleTarget);
+                    }
+                } else {
+                    eleMenus.each(function () {
+                        if (eleTarget === null && this.href.split("?")[1] === query) {
+                            eleTarget = this;
+                        }
+                    });
+
+                    if (!eleTarget) {
+                        // 如果查询序列没有对应的导航菜单，去除查询然后执行回调
+                        history.replaceState(null, document.title, location.href.split("?")[0]);
+                        fnHashTrigger();
+                    } else {
+                        $(eleTarget).trigger("click");
+                    }
+                }
+            };
+
+            if (history.pushState) {
+                window.addEventListener('popstate', function () {
+                    //console.log(location.href);
+                    fnHashTrigger();
+                });
+                //默认载入
+                fnHashTrigger();
+            }
+        }
+    </script>
+</head>
+<body>
+<ul id="choMenu" class="rel cho_menu">
+    <li><a href="ajax.php?area=pudong" class="cho_link">浦东区<span class="ml20">8</span></a></li>
+    <li><a href="ajax.php?area=baoshan" class="cho_link">宝山区<span class="ml20">7</span></a></li>
+    <li><a href="ajax.php?area=jiading" class="cho_link">嘉定区<span class="ml20">8</span></a></li>
+    <li><a href="ajax.php?area=qingpu" class="cho_link">青浦区<span class="ml20">3</span></a></li>
+    <li><a href="ajax.php?area=minhang" class="cho_link">闵行区<span class="ml20">4</span></a></li>
+    <li><a href="ajax.php?area=putuo" class="cho_link">普陀区<span class="ml20">2</span></a></li>
+    <li><a href="ajax.php?area=jinshan" class="cho_link">金山区<span class="ml20">3</span></a></li>
+    <li><a href="ajax.php?area=songjiang" class="cho_link">松江区<span class="ml20">3</span></a></li>
+    <li><a href="ajax.php?area=zhabei" class="cho_link">闸北区<span class="ml20">1</span></a></li>
+    <li><a href="ajax.php?area=fengxian" class="cho_link">奉贤区<span class="ml20">5</span></a></li>
+    <li><a href="ajax.php?area=huangpu" class="cho_link">黄浦区<span class="ml20">1</span></a></li>
+    <li><a href="ajax.php?area=changning" class="cho_link">长宁区<span class="ml20">1</span></a></li>
+    <li><a href="ajax.php?area=jingan" class="cho_link">静安区<span class="ml20">1</span></a></li>
+    <li><a href="ajax.php?area=zhoubian" class="cho_link">上海周边<span class="ml20">1</span></a></li>
+</ul>
+</body>
+</html>

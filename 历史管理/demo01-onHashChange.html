@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload = function () {
+            //onHashChange 事件，当hash值发生改变的时候触发
+            var oInput = document.getElementsByTagName('input')[0];
+            var oDiv = document.getElementsByTagName('div')[0];
+            var obj = {};
+
+            oInput.onclick = function () {
+                var number = randomNum(35, 7);
+                oDiv.innerHTML = number;
+                var oRd = Math.random();
+                obj[oRd] = number;
+                window.location.hash = oRd;
+            };
+
+            window.onhashchange = function () {
+                var num = obj[window.location.hash.substring(1)] || '';
+                oDiv.innerHTML = num;
+            };
+
+            function randomNum(alls, now) {
+                var arr = [];
+                var newArr = [];
+
+                for (var i = 1; i <= alls; i++) {
+                    arr.push(i);
+                }
+
+                for (var i = 1; i <= now; i++) {
+                    newArr.push(arr[Math.floor(Math.random() * arr.length)]);
+
+                }
+                return newArr;
+            }
+        };
+    </script>
+</head>
+<body>
+<input type="button" value="35选7">
+<div></div>
+</body>
+</html>
