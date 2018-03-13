@@ -160,4 +160,8 @@ function quickSort(arr, boolean) {
 
     return quickSort(left, boolean).concat([numVal], quickSort(right, boolean));
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c1111dfb9a6504df3b63fc6205fa683c19e16fbc
