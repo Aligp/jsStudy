@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function Person(name, sex) {//构造函数(类)
+            this.name = name;
+            this.sex = sex;
+        }
+
+        Person.prototype.showName = function () {
+            alert(this.name);
+        };
+        Person.prototype.showSex = function () {
+            alert(this.sex);
+        };
+
+        function Worker(name, sex, job) {
+            //构造函数伪装：调用父级构造函数
+            //这里的this是new出来的Workder对象
+            Person.call(this, name, sex);
+            this.job = job;
+        }
+
+        //原型链：通过原型来继承父级的方法
+        //Worker.prototype = Person.prototype;//--引用，子类会影响父类，不能使用
+        //将父级的方法逐个赋值给子类，当子类改变的时候就不会影响父类
+        for (var i in Person.prototype) {
+            Worker.prototype[i] = Person.prototype[i]
+        }
+
+        Worker.prototype.showJob = function () {
+            alert(this.job);
+        };
+
+        var oW1 = new Worker('liu', '男', '打杂的');
+        /*oW1.showName();
+        oW1.showSex();
+        oW1.showJob();
+*/
+        //instanceof 判断某个对象是否是某个类的实例
+        alert(oW1 instanceof Worker);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

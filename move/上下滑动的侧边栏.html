@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #div {
+            width: 100px;
+            height: 100px;
+            background: rebeccapurple;
+            position: absolute;
+            right: 0;
+        }
+    </style>
+    <script>
+        window.onscroll = function () {
+            var oDiv = document.getElementById("div");
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            //目标点 因为又除法，所以目标点有可能是小数，应该对目标点取证，否则会来回晃动
+            var t = scrollTop + (document.documentElement.clientHeight - oDiv.offsetHeight) / 2;
+
+            startMove(parseInt(t));
+
+        };
+        var timer = null;
+
+        function startMove(iTarget) {
+            var oDiv = document.getElementById("div");
+            clearInterval(timer);
+            timer = setInterval(function () {
+                var iSpeed = (iTarget - oDiv.offsetTop) / 8;
+                iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+                if (iTarget == oDiv.offsetTop) {
+                    clearInterval(timer);
+                } else {
+                    oDiv.style.top = oDiv.offsetTop + iSpeed + 'px';
+                }
+            }, 30);
+        }
+    </script>
+</head>
+<body style="height: 2000px;">
+<div id="div"></div>
+</body>
+</html>

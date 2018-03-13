@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="demo.css">
+    <script>
+        window.onload = function () {
+            var oImg = document.getElementById("img1");
+            var aImg = document.getElementsByTagName("img");
+            var LastImg = oImg;
+            var LastX = 0;
+            var iSpeed = 0;
+            var x = 0;
+            var timer = null;
+
+            /*for (var i = 1; i < 77; i++) {
+                var oNewImg = document.createElement("img");
+                oNewImg.src = "img/miaov%20(" + i + ").jpg";
+                oNewImg.style.display = 'none';
+                document.body.appendChild(oNewImg);
+            }*/
+            //使用图片预加载
+            for (var i = 1; i < 77; i++) {
+                (function (oNewImg) {
+                    var oImg = new Image();
+
+                    oImg.onload = function () {
+                        oNewImg.src = this.src;
+                    };
+                    oImg.src = "img/miaov%20(" + i + ").jpg";
+
+                    oNewImg.style.display = 'none';
+                    document.body.appendChild(oNewImg);
+
+                })(document.createElement("img"));
+            }
+
+            document.onmousedown = function (e) {
+
+                clearInterval(timer);
+
+                var e = e || event;
+                var disX = e.clientX - x;
+                document.onmousemove = function (e) {
+                    var e = e || event;
+                    x = e.clientX - disX;
+                    var l = parseInt(-x / 10);
+                    if (l > 0) {
+                        l = l % 77;
+                    } else {
+                        l = l + -Math.floor(l / 77) * 77;
+                    }
+                    if (LastImg != aImg[l]) {
+                        LastImg.style.display = "none";
+                        aImg[l].style.display = "block";
+                        LastImg = aImg[l];
+                    }
+
+                    iSpeed = x - LastX;
+                    LastX = x;
+                    //频繁切换src会卡，改成显示隐藏display
+                    //oImg.src = "img/miaov%20(" + l + ").jpg";
+
+                    return false;
+                };
+
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+
+                    timer = setInterval(function () {
+                        x += iSpeed;
+                        if (iSpeed > 0) {
+                            iSpeed--;
+                        } else if (iSpeed < 0) {
+                            iSpeed++
+                        }
+                        if (iSpeed == 0) {
+                            clearInterval(timer);
+                        }
+
+                        var l = parseInt(-x / 10);
+                        if (l > 0) {
+                            l = l % 77;
+                        } else {
+                            l = l + -Math.floor(l / 77) * 77;
+                        }
+                        if (LastImg != aImg[l]) {
+                            LastImg.style.display = "none";
+                            aImg[l].style.display = "block";
+                            LastImg = aImg[l];
+                        }
+                    }, 30);
+
+                };
+                return false;
+            }
+
+        }
+    </script>
+</head>
+<body>
+<img id="img1" src="img/miaov%20(0).jpg" alt="">
+</body>
+</html>

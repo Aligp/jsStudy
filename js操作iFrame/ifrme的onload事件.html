@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload = function () {
+            var oIframe = document.createElement('iframe');
+            oIframe.src = 'children.html';
+            document.body.appendChild(oIframe);
+
+            oIframe.onload = function () {
+                alert("iframe加载完成");
+            };
+
+            //ie 下的iframe的onload事件只能用绑定的形式
+            oIframe.attachEvent('onload',function () {
+                alert("iframe加载完成");
+            })
+
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

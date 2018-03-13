@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #div {
+            width: 100px;
+            height: 100px;
+            background: #abcdef;
+            position: absolute;
+        }
+
+        #div2 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: absolute;
+            left: 500px;
+            top: 200px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            /**
+             * 拖拽的时候，如果有文字选中，会出问题
+             * 当鼠标按下的时候，如果页面中有文字被选中，就会触
+             * 发浏览器默认的行为，
+             * 解决办法就是取消默认行为：return:false
+             * 标准：阻止默认行为
+             *
+             * 非标准ie：
+             * obj.setCapture():设置全局捕获，当我们给一个元素设置全局捕获以后，那么这个元素就会监听后续发生的所有事件，当有事件发生的时候，就会被当前设置了全局捕获的元素所触发--ie:有并且有效果，ff，有且没有效果，chrome,没有
+             *
+             * 拖拽图片会有同样的问题，解决办法同上
+             */
+            var oDiv = document.getElementById('div');
+            var oDiv2 = document.getElementById('div2');
+            drag(oDiv, oDiv2);
+            function drag(obj, obj2) {
+                oDiv.onmousedown = function (e) {
+                    var e = e || event;
+                    var disx = e.clientX - this.offsetLeft;
+                    var disy = e.clientY - this.offsetTop;
+
+                    if (obj.setCapture) {
+                        obj.setCapture();
+                    }
+
+                    document.onmousemove = function (e) {
+                        var e = e || event;
+                        var L = e.clientX - disx;
+                        var T = e.clientY - disy;
+
+                        var L1 = L;
+                        var R1 = L + obj.offsetWidth;
+                        var T1 = T;
+                        var B1 = T + obj.offsetHeight;
+
+                        var L2 = obj2.offsetLeft;
+                        var R2 = obj2.offsetLeft + obj2.offsetWidth;
+                        var T2 = obj2.offsetTop;
+                        var B2 = obj2.offsetTop + obj2.offsetHeight;
+
+                        if (L < 20) {
+                            L = 0;
+                        } else if (L > document.documentElement.clientWidth - obj.offsetWidth - 20) {
+                            L = document.documentElement.clientWidth - obj.offsetWidth;
+                        }
+                        if (T < 20) {
+                            T = 0;
+                        } else if (T > document.documentElement.clientHeight - obj.offsetHeight - 20) {
+                            T = document.documentElement.clientHeight - obj.offsetHeight;
+                        }
+
+                        if (obj2) {
+                            if (R1 < L2 || L1 > R2 || B1 < T2 || T1 > B2) {
+                                obj2.style.backgroundColor = 'red';
+                            } else {
+                                obj2.style.backgroundColor = '#abcdef';
+                            }
+                        }
+
+                        obj.style.left = L + 'px';
+                        obj.style.top = T + 'px';
+                    };
+
+                    document.onmouseup = function () {
+                        document.onmousemove = document.onmouseup = null;
+                        //释放全局捕获
+                        if (obj.relaseCapture) {
+                            obj.relaseCapture();
+                        }
+                    };
+                    return false;//取消默认行为
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div id="div"></div>
+<div id="div2"></div>
+</body>
+</html>

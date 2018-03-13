@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #div {
+            width: 400px;
+            height: 250px;
+            border: solid 1px #abcdef;
+        }
+
+        #div div {
+            border-bottom: dotted 1px #abcdef;
+            filter: alpha(opacity:0);
+            opacity: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="baseMove.js"></script>
+    <script>
+        window.onload = function () {
+            var oTxt = document.getElementById('txt');
+            var oBtn = document.getElementById('btn');
+            var oDiv = document.getElementById('div');
+
+            oBtn.onclick = function () {
+                var aDivEle = document.createElement("div");
+                var aDiv = oDiv.getElementsByTagName("div");
+                aDivEle.innerHTML = oTxt.value;
+                oTxt.value = '';
+                if (aDiv.length) {
+                    oDiv.insertBefore(aDivEle, aDiv[0]);
+                } else {
+                    oDiv.appendChild(aDivEle);
+                }
+
+                var divH = aDivEle.offsetHeight;
+                aDivEle.style.height = 0;
+                syncMove(aDivEle, {height: divH}, function () {
+                    syncMove(aDivEle, {opacity: 100})
+                })
+            }
+
+        }
+    </script>
+</head>
+<body>
+<textarea id="txt" cols="40" rows="10"></textarea>
+<button id="btn">发布</button>
+<div id="div">
+
+</div>
+</body>
+</html>

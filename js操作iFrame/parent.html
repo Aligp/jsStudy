@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload = function () {
+            var oBtn = document.getElementById('btn');
+            var oIframe = document.getElementById('iframe');
+
+            oBtn.onclick = function () {
+                //oIframe.contentWindow所有浏览器都支持
+                oIframe.contentWindow.document.getElementById('div').style.color = "red";
+                //oIframe.contentDocument ie6 ie7不支持
+                oIframe.contentDocument.getElementById('div').style.background = '#abcdef';
+            };
+
+
+
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="改变子页面" id="btn">
+<iframe src="children.html" id="iframe"></iframe>
+<div id="p-div">父级页面的内容</div>
+</body>
+</html>

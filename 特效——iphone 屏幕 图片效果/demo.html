@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="demo.css">
+    <script src="perfectDrag.js"></script>
+    <script>
+        var oTimer = null;
+        var iSpeed = 0;
+        var iNow = 0;
+
+        window.onload = function () {
+            var oUl = document.getElementById('wrap').getElementsByTagName('ul')[0];
+            var iStartX;
+            new MiaovPerfectDrag(
+                oUl,
+                function () {
+                    return {x: oUl.offsetLeft, y: oUl.offsetTop}
+                },
+                function (x, y) {
+                    oUl.style.left = x + 'px';
+                },
+                function () {
+                    stopMove();
+                    iStartX = oUl.offsetLeft;
+                },
+                function () {
+                    if (Math.abs(oUl.offsetLeft - iStartX) >= 50) {
+                        if (oUl.offsetLeft > iStartX) {
+                            iNow--;
+                            if (iNow < 0) {
+                                iNow = 0;
+                            }
+                        } else {
+                            iNow++;
+                            if (iNow >= oUl.getElementsByTagName('li').length) {
+                                iNow = oUl.getElementsByTagName('li').length - 1;
+                            }
+                        }
+                        startMove(-iNow * oUl.getElementsByTagName('li')[0].offsetWidth);
+                    }
+                }
+            );
+        };
+
+        function startMove(iTarget) {
+            if (oTimer) {
+                clearInterval(oTimer);
+            }
+
+            oTimer = setInterval("doMove(" + iTarget + ")", 30);
+        }
+
+        function doMove(iTarget) {
+            var oUl = document.getElementById('wrap').getElementsByTagName('ul')[0];
+            var l = oUl.offsetLeft;
+            iSpeed += (iTarget - oUl.offsetLeft) / 5;
+            iSpeed *= 0.7;
+            l += iSpeed;
+
+            if (Math.abs(iTarget - oUl.offsetLeft) < 1 && Math.abs(iSpeed) < 1) {
+                clearInterval(oTimer);
+                oTimer = null;
+                l = iTarget;
+            }
+            oUl.style.left = l + 'px';
+        }
+
+        function stopMove() {
+            if (oTimer) {
+                clearInterval(oTimer);
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div id="iphone">
+    <div id="wrap">
+        <ul>
+            <li style="background:url(images/pic1.png);"></li>
+            <li style="background:url(images/pic2.png);"></li>
+            <li style="background:url(images/pic3.png);"></li>
+            <li style="background:url(images/pic4.png);"></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

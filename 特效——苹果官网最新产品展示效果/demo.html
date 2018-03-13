@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="demo.css">
+    <script type="text/javascript" src="../gp.move.js"></script>
+    <script type="text/javascript">
+
+        window.onload = function () {
+            var oDiv = document.getElementById('div1');
+
+            var aLi = getByClass(oDiv, 'miaov_box_head')[0].getElementsByTagName('li');
+            var aBtn = getByClass(oDiv, 'miaov_box_foot')[0].getElementsByTagName('a');
+            var oCaret = getByClass(oDiv, 'caret')[0];
+            var aPos = [];
+            var timer = null;
+            var i = 0;
+
+            for (i = 0; i < aLi.length; i++) {
+                aPos[i] = aLi[i].offsetLeft;
+            }
+            for (i = 0; i < aLi.length; i++) {
+                aLi[i].style.position = 'absolute';
+                aLi[i].style.left = aPos[i] + 'px';
+            }
+
+            aBtn[1].onclick = function () {
+                clearInterval(timer);
+                var i = 1;
+                gpStartMove(aLi[0], {"left": -600}, GP_MOVE_TYPE.FLEX);
+                timer = setInterval(function () {
+                    gpStartMove(aLi[i++], {"left": -600}, GP_MOVE_TYPE.FLEX);
+                    if (i >= aLi.length / 2) {
+                        clearInterval(timer);
+                        setTimeout(next, 300);
+                    }
+                }, 100);
+
+                function next() {
+                    timer = setInterval(function () {
+                        //此时i = aLi.length / 2
+                        gpStartMove(aLi[i], {"left": aPos[i - aLi.length / 2]}, GP_MOVE_TYPE.FLEX);
+                        i++;
+                        if (i >= aLi.length) {
+                            clearInterval(timer);
+                        }
+                    }, 100)
+                }
+
+                aBtn[0].className = '';
+                aBtn[1].className = 'show';
+
+                gpStartMove(oCaret, {"left": this.offsetLeft + aBtn[1].offsetWidth / 2}, GP_MOVE_TYPE.FLEX);
+
+            };
+
+            aBtn[0].onclick = function () {
+                clearInterval(timer);
+                var i = aLi.length - 2;
+                gpStartMove(aLi[aLi.length - 1], {"left": 900}, GP_MOVE_TYPE.FLEX);
+                timer = setInterval(function () {
+                    gpStartMove(aLi[i--], {"left": 900}, GP_MOVE_TYPE.FLEX);
+                    if (i < aLi.length / 2) {
+                        clearInterval(timer);
+                        setTimeout(next, 300);
+                    }
+                }, 100);
+
+                function next() {
+                    timer = setInterval(function () {
+                        gpStartMove(aLi[i], {"left": aPos[i]}, GP_MOVE_TYPE.FLEX);
+                        i--;
+                        if (i < 0) {
+                            clearInterval(timer);
+                        }
+                    }, 100)
+                }
+
+                aBtn[0].className = 'show';
+                aBtn[1].className = '';
+
+                gpStartMove(oCaret, {"left": 424}, GP_MOVE_TYPE.FLEX);
+            }
+
+        };
+    </script>
+</head>
+
+<body>
+
+<div id="div1" class="page">
+    <div class="miaov_box">
+        <ul class="miaov_box_head miaov_box_head2">
+            <li><a href="#"><img src="img/1.jpg" alt=""/>iPod shuffle</a></li>
+            <li><a href="#"><img src="img/2.jpg" alt=""/>iPod nano</a></li>
+            <li><a href="#"><img src="img/3.jpg" alt=""/>iPod classic</a></li>
+            <li><a href="#"><img src="img/4.jpg" alt=""/>iPod touch</a></li>
+            <li><a href="#"><img src="img/5.jpg" alt=""/>Apple TV</a></li>
+            <li><a href="#"><img src="img/6.jpg" alt=""/>Accessories</a></li>
+            <li><a href="#"><img src="img/7.jpg" alt=""/>Download iTunes 10</a></li>
+            <li><a href="#"><img src="img/8.jpg" alt=""/>iTunes Gift Cards</a></li>
+            <li><a href="#"><img src="img/9.jpg" alt=""/>Nike + iPod</a></li>
+            <li><a href="#"><img src="img/10.jpg" alt=""/>(PRODUCT) RED</a></li>
+            <li><a href="#"><img src="img/11.jpg" alt=""/>MobileMe</a></li>
+            <li><a href="#"><img src="img/12.jpg" alt=""/>In-Ear Headphones</a></li>
+        </ul>
+    </div>
+    <div class="miaov_box_foot">
+        <span style="left: 424px;" class="caret"></span>
+        <a class="show">Products</a>
+        <a>iTunes and more</a>
+    </div>
+</div>
+
+
+</body>
+</html>

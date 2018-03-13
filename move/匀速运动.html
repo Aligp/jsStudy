@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #div {
+            width: 100px;
+            height: 100px;
+            background: rebeccapurple;
+            position: absolute;
+            left: 0;
+            top: 50px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var oDiv = document.getElementById('div');
+            startMove(oDiv, 300);
+        };
+        var timer = null;
+
+        function startMove(obj, iTarget) {
+            clearInterval(timer);
+            timer = setInterval(function () {
+                var iSpeed = 0;
+
+                if (obj.offsetLeft < iTarget) {
+                    iSpeed = 5;
+                } else {
+                    iSpeed = -5;
+                }
+
+                /**
+                 * 匀速运动停止的条件是：
+                 * 距离足够近(最后一次完不成一次运动，就直接给定目标点)
+                 * 因为一次运动5，最后一次假如说剩下3，不够一次运动，就可以直接到达目标点了
+                 */
+                //if (obj.offsetLeft == iTarget) {//是否到达终点
+                if (Math.abs(obj.offsetLeft - iTarget) < Math.abs(iSpeed)) {//是否到达终点
+                    clearInterval(timer);
+                    obj.style.left = iTarget + 'px';
+                } else {
+                    obj.style.left = obj.offsetLeft + iSpeed + 'px';
+                }
+            }, 30)
+        }
+    </script>
+</head>
+<body>
+<div id="div"></div>
+</body>
+</html>

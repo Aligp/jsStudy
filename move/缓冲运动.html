@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #div {
+            width: 50px;
+            height: 50px;
+            background: indianred;
+            position: absolute;
+            left: 0;
+            top: 100px;
+        }
+    </style>
+    <script>
+        /**
+         * 缓冲运动，距离越近，速度越慢，(变速运动，让速度越来越小直到0)
+         *
+         */
+        var timer = null;
+
+        function startMove(iTarget) {
+            var oDiv = document.getElementById("div");
+
+            clearInterval(timer);
+            timer = setInterval(function () {
+                var iSpeed = (iTarget - oDiv.offsetLeft) / 8;
+                //最后速度很有可能是小数，需要取整
+                iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+                /**
+                 * 缓冲运动停止条件是：
+                 *  两点重合
+                 * （重要的是，不管是速度，还是目标点，如果有小数，一定要取整）
+                 */
+                if (iTarget == oDiv.offsetLeft) {
+                    clearInterval(timer);
+                } else {
+                    oDiv.style.left = oDiv.offsetLeft + iSpeed + 'px';
+                }
+            }, 30);
+
+        }
+    </script>
+</head>
+<body>
+<button onclick="startMove(300)">start</button>
+<div id="div"></div>
+<span style="width:1px;height:300px;background:#000;position:absolute;left: 300px;"></span>
+</body>
+</html>

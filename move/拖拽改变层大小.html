@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #div {
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var oDiv = document.getElementById("div");
+
+            oDiv.onmousedown = function (ev) {
+                var ev = ev || event;
+                var lr = '';
+
+                var divW = this.offsetWidth;//鼠标点击时，div的宽度
+                var eX = ev.clientX;//鼠标点击时，鼠标的位置
+                var divLeft = this.offsetLeft;
+
+                var disX = ev.clientX - divLeft;
+                var disY = ev.clientY - this.offsetTop;
+
+                if (disX > divW - 10) {
+                    lr = 'right';
+                }
+                if (disX < 10) {
+                    lr = 'left';
+                }
+
+                document.onmousemove = function (ev2) {
+                    var ev2 = ev2 || event;
+                    switch (lr) {
+                        case 'left':
+                            oDiv.style.width = divW - (ev2.clientX - eX) + 'px';
+                            oDiv.style.left = divLeft + (ev2.clientX - eX) + 'px';
+                            break;
+                        case 'right':
+                            oDiv.style.width = divW + (ev2.clientX - eX) + 'px';
+                            break;
+                    }
+                };
+
+                document.onmouseup = function () {
+                    document.onmousemove = document.onmouseup = null;
+                };
+
+                return false;
+
+            }
+
+        }
+    </script>
+    <script src="../../js/Drag.js"></script>
+</head>
+<body>
+<div id="div"></div>
+</body>
+</html>

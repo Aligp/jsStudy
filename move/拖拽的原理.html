@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #div {
+            width: 100px;
+            height: 100px;
+            background: #abcdef;
+            position: absolute;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            /**
+             * 拖拽的时候，如果有文字选中，会出问题
+             * 当鼠标按下的时候，如果页面中有文字被选中，就会触
+             * 发浏览器默认的行为，(默认拖拽文字的效果)
+             * 解决办法就是取消默认行为：return:false
+             * 标准：阻止默认行为
+             *
+             * 非标准ie：
+             * obj.setCapture():设置全局捕获，当我们给一个元素设置全局捕获以后，那么这个元素就会监听后续发生的所有事件，当有事件发生的时候，就会被当前设置了全局捕获的元素所触发--ie:有并且有效果，ff，有且没有效果，chrome,没有
+             *
+             * 拖拽图片会有同样的问题，解决办法同上
+             */
+            var oDiv = document.getElementById('div');
+            drag(oDiv);
+
+            function drag(obj) {
+                obj.onmousedown = function (e) {
+                    var e = e || event;
+                    var disx = e.clientX - this.offsetLeft;
+                    var disy = e.clientY - this.offsetTop;
+
+                    if (obj.setCapture) {
+                        obj.setCapture();
+                    }
+
+                    document.onmousemove = function (e) {
+                        var e = e || event;
+                        var l = e.clientX - disx;
+                        var t = e.clientY - disy;
+
+                        if (l < 20) {
+                            l = 0;
+                        } else if (l > document.documentElement.clientWidth - obj.offsetWidth - 20) {
+                            l = document.documentElement.clientWidth - obj.offsetWidth;
+                        }
+                        if (t < 20) {
+                            t = 0;
+                        } else if (t > document.documentElement.clientHeight - obj.offsetHeight - 20) {
+                            t = document.documentElement.clientHeight - obj.offsetHeight;
+                        }
+
+                        obj.style.left = l + 'px';
+                        obj.style.top = t + 'px';
+                    };
+
+                    document.onmouseup = function () {
+                        document.onmousemove = document.onmouseup = null;
+                        //释放全局捕获
+                        if (obj.relaseCapture) {
+                            obj.relaseCapture();
+                        }
+                    };
+                    return false;//取消默认行为
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+sdafe
+<div id="div"></div>
+</body>
+</html>

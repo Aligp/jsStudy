@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #img {
+            filter: opacity(30);
+            opacity: .3;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var oImg = document.getElementById('img');
+            oImg.onmouseover = function () {
+                startMove(100);
+            };
+            oImg.onmouseout = function () {
+                startMove(30);
+            };
+        };
+        var timer = null;
+        var alpha = 30;//没有offsetLeft 类似的，可以用变量代替
+
+        function startMove(iTarget) {
+            var oImg = document.getElementById('img');
+
+            clearInterval(timer);
+            timer = setInterval(function () {
+                var iSpeed = 10;
+
+                if (alpha < iTarget) {
+                    iSpeed = 10;
+                } else {
+                    iSpeed = -10;
+                }
+
+                if (alpha == iTarget) {
+                    clearInterval(timer);
+                } else {
+                    alpha += iSpeed;
+                    oImg.style.filter = "opacity(" + alpha + ")";
+                    oImg.style.opacity = alpha / 100;
+                }
+
+            }, 30);
+
+        }
+    </script>
+</head>
+<body>
+<img id="img" src="images/car.jpg" width="500" alt="">
+</body>
+</html>

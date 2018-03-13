@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none
+        }
+
+        #ul {
+            width: 600px;
+            height: 250px;
+        }
+
+        #ul li {
+            width: 100px;
+            height: 100px;
+            background: red;
+            float: left;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        a {
+            margin: 5px;
+        }
+    </style>
+    <script src="../gp.move.js"></script>
+    <script src="move.js"></script>
+    <script>
+        window.onload = function () {
+
+            var json = {
+                title: [
+                    '效果1',
+                    '效果2',
+                    '效果3',
+                    '效果4',
+                    '效果5',
+                    '效果6',
+                    '效果7',
+                    '效果8',
+                    '效果9',
+                    '效果10',
+                    '效果11',
+                    '效果12',
+                    '效果13',
+                    '效果14',
+                    '效果15',
+                    '效果16',
+                    '效果17',
+                    '效果18',
+                    '效果19',
+                    '效果20',
+                    '效果21',
+                    '效果22',
+                    '效果23',
+                    '效果24',
+                    '效果25',
+                    '效果26',
+                    '效果27',
+                    '效果28',
+                    '效果29',
+                    '效果30',
+                    '效果31',
+                    '效果32',
+                    '效果33',
+                    '效果34'
+                ]
+            };
+
+            var arr = [];
+            var iNow = 9;
+
+            page({
+
+                id: 'div1', //分页容器
+                nowNum: 1,  //当前页
+                allNum: Math.ceil(json.title.length / 10),  //总页数
+                callBack: function (now, all) {
+
+                    var num = now * 10 < json.title.length ? 10 : json.title.length - (now - 1) * 10;
+                    var oUl = document.getElementById('ul');
+                    var aLi = document.getElementsByTagName('li');
+
+                    if (oUl.innerHTML == '') {
+
+                        for (var i = 0; i < num; i++) {
+                            var oLi = document.createElement('li');
+                            oLi.innerHTML = json.title[(now - 1) * 10 + i];
+                            oUl.appendChild(oLi);
+                        }
+
+                        for (var i = 0; i < aLi.length; i++) {
+                            arr.push([aLi[i].offsetLeft, aLi[i].offsetTop]);
+                        }
+
+                        for (var i = 0; i < aLi.length; i++) {
+                            aLi[i].style.position = 'absolute';
+                            aLi[i].style.left = arr[i][0] + 'px';
+                            aLi[i].style.top = arr[i][1] + 'px';
+                            aLi[i].style.margin = 0;
+                        }
+
+                    } else {
+
+                        var timer = setInterval(function () {
+
+                            startMove(aLi[iNow], {left: 200, top: 250, opacity: 0});
+
+                            if (iNow == 0) {
+                                clearInterval(timer);
+                                iNow = num - 1;
+
+                                for (var i = 0; i < num; i++) {
+                                    aLi[i].innerHTML = json.title[(now - 1) * 10 + i];
+                                }
+
+                                var timer2 = setInterval(function () {
+                                    // alert(iNow);
+                                    startMove(aLi[iNow], {left: arr[iNow][0], top: arr[iNow][1], opacity: 100});
+                                    if (iNow == 0) {
+                                        clearInterval(timer2);
+                                        iNow = num - 1;
+                                    } else {
+                                        iNow--;
+                                    }
+                                }, 100)
+                            } else {
+                                iNow--;
+                            }
+
+                        }, 100);
+                    }
+
+                }
+
+            });
+
+        };
+
+        function page(opt) {
+
+            if (!opt.id) {
+                return false
+            }
+
+            var obj = document.getElementById(opt.id);
+
+            var nowNum = opt.nowNum || 1;
+            var allNum = opt.allNum || 5;
+            var callBack = opt.callBack || function () {
+            };
+
+            if (allNum <= 5) {//小于等于5页的时候，不出现首页，尾页和上(下)一页
+                for (var i = 1; i <= allNum; i++) { //有几页就创建几个a
+                    var oA = document.createElement('a');
+                    oA.href = '#' + i;
+                    if (nowNum == i) { //判断是否当前页
+                        oA.innerHTML = i;  //改变当前页的样式
+                    } else {
+                        oA.innerHTML = '[' + i + ']';
+                    }
+                    obj.appendChild(oA);
+                }
+            } else { //总页面大于5页
+
+                for (var i = 1; i <= 5; i++) { //始终显示5页，只创建5个a即可
+                    var oA = document.createElement('a');
+
+                    if (nowNum == 1 || nowNum == 2) {
+                        alert("1");
+                        oA.href = '#' + i;
+                        if (nowNum == i) {
+                            oA.innerHTML = i;  //改变当前页的样式
+                        } else {
+                            oA.innerHTML = '[' + i + ']';
+                        }
+
+                    } else if ((allNum - nowNum) == 0 || (allNum - nowNum) == 1) {//如果是最后两页
+
+                        oA.href = '#' + (allNum - 5 + i);
+
+                        if ((allNum - nowNum) == 0 && i == 5) {
+                            oA.innerHTML = (allNum - 5 + i); //改变当前页的样式
+                        } else if ((allNum - nowNum) == 1 && i == 4) {
+                            oA.innerHTML = (allNum - 5 + i); //改变当前页的样式
+                        } else {
+                            oA.innerHTML = '[' + (allNum - 5 + i) + ']';
+                        }
+
+                    } else {
+                        //假如当前页nowNum为4， 那么五个页码数为 2,3,4,5,6，
+                        oA.href = '#' + (nowNum - 3 + i);
+
+                        if (i == 3) { // i为3，是当前五个页面中的中间的，也就是当前页
+                            oA.innerHTML = (nowNum - 3 + i);  //改变当前页的样式
+                        } else {
+                            oA.innerHTML = '[' + (nowNum - 3 + i) + ']';
+
+                        }
+                    }
+                    obj.appendChild(oA);
+
+                }
+
+            }
+
+            //出现首页a标签
+            if (nowNum >= 4 && allNum >= 6) {
+                var oA = document.createElement('a');
+                oA.href = '#1';
+                oA.innerHTML = '首页';
+                obj.appendChild(oA);
+
+            }
+
+            //出现上一页a标签
+            if (nowNum >= 2) {
+                var oA = document.createElement('a');
+                oA.href = '#' + (nowNum - 1);
+                oA.innerHTML = '上一页';
+                obj.appendChild(oA);
+            }
+
+            //出现下一页a标签
+            if ((allNum - nowNum) >= 1) {
+                var oA = document.createElement('a');
+                oA.href = '#' + (nowNum + 1);
+                oA.innerHTML = '下一页';
+                obj.appendChild(oA);
+            }
+
+            //出现尾页a标签
+            if ((allNum - nowNum) >= 3 && allNum >= 6) {
+
+                var oA = document.createElement('a');
+                oA.href = '#' + allNum;
+                oA.innerHTML = '尾页';
+                obj.appendChild(oA);
+
+            }
+
+            callBack(nowNum, allNum);
+
+            //所有的a标签都添加点击操作
+            var aA = obj.getElementsByTagName('a');
+            for (var i = 0; i < aA.length; i++) {
+                aA[i].onclick = function () {
+
+                    var nowNum = parseInt(this.getAttribute('href').substring(1));
+
+                    //先清空页码的容器
+                    obj.innerHTML = '';
+
+                    //重新执行
+                    page({
+                        id: opt.id,
+                        nowNum: nowNum,
+                        allNum: allNum,
+                        callBack: callBack
+
+                    });
+
+                    return false;
+
+                };
+            }
+
+        }
+    </script>
+</head>
+<body>
+<ul id="ul"></ul>
+<div id="div1">
+    <!--<a href="#1">首页</a>
+    <a href="#2">上一页</a>
+    <a href="#3">【2】</a>
+    <a href="#4">【3】</a>
+    <a href="#5">4</a>
+    <a href="#6">【5】</a>
+    <a href="#7">【6】</a>
+    <a href="#5">下一页</a>
+    <a href="#10">尾页</a>-->
+</div>
+</body>
+</html>

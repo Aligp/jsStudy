@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload = function () {
+            var oDiv = document.getElementById('div');
+            var oBtn = document.getElementById('btn');
+
+            oBtn.onclick = function () {
+                var arr = oDiv.innerHTML.split(',');
+
+                arr.push(arr[0]);
+                arr.shift();
+
+                oDiv.innerHTML = arr;
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div id="div">1,2,3,4</div>
+<input id="btn" type="button" value="切换">
+</body>
+</html>

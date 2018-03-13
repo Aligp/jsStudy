@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="demo.css">
+    <script>
+        var radius = 120;
+        var dtr = Math.PI / 180;//每角度对应的弧度
+        var mcList = [];
+
+
+
+        var oDiv = null;
+        var aA = null;
+        window.onload = function () {
+            oDiv = document.getElementById('div1');
+            aA = oDiv.getElementsByTagName('a');
+
+            for(i=0;i<aA.length;i++)
+            {
+                oTag={};
+
+                oTag.offsetWidth=aA[i].offsetWidth;
+                oTag.offsetHeight=aA[i].offsetHeight;
+
+                mcList.push(oTag);
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div id="div1">
+    <a href="#">JS课程</a>
+    <a href="#" class="red">教程</a>
+    <a href="#">试听</a>
+    <a href="#">精品</a>
+    <a href="#" class="blue">妙味课堂</a>
+    <a href="#">SEO</a>
+    <a href="#" class="red">特效</a>
+    <a href="#" class="yellow">JavaScript</a>
+    <a href="#">miaov</a>
+    <a href="#" class="red">CSS</a>
+    <a href="#">求职</a>
+    <a href="#" class="blue">面试题</a>
+    <a href="#">继承</a>
+    <a href="#" class="red">妙味课堂</a>
+    <a href="#" class="blue">OOP</a>
+    <a href="#">XHTML</a>
+    <a href="#" class="blue">setInterval</a>
+    <a href="#">W3C</a>
+    <a href="#">石川</a>
+    <a href="#" class="yellow">妙味课堂</a>
+    <a href="#">blue</a>
+</div>
+</body>
+</html>

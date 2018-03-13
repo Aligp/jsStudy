@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #div1, #div2 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: absolute;
+        }
+
+        #div1 {
+            left: 100px;
+            top: 0;
+        }
+
+        #div2 {
+            left: 0;
+            top: 200px;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            var oDiv1 = document.getElementById('div1');
+            var oDiv2 = document.getElementById('div2');
+            oDiv1.onclick = function () {
+                startMove(this, {"left": 300});
+            };
+            oDiv2.onclick = function () {
+                startMove(this, {"top": 400});
+            }
+        };
+
+        function getStyle(obj, attr) {
+            return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, false)[attr];
+        }
+
+        function startMove(obj, oTarget, fn) {
+            clearInterval(obj.timer);
+            obj.timer = setInterval(function () {
+                var bStop = true;
+                for (attr in oTarget) {
+
+                    if (!obj.oSpeed) obj.oSpeed = {};
+                    if (!obj.oLeft) obj.oLeft = 0;
+                    if (!obj.oSpeed[attr]) obj.oSpeed[attr] = 0;
+                    cur = getStyle(obj,attr);
+                    // console.log(parseInt(cur)+'---'+obj.offsetLeft);
+                    obj.oSpeed[attr] += (oTarget[attr] - parseInt(cur)) / 5;
+                    obj.oSpeed[attr] *= 0.7;
+                    obj.oLeft += obj.oSpeed[attr];
+
+                    if (Math.abs(obj.oSpeed[attr]) < 1 && Math.abs(obj.oLeft - oTarget[attr]) < 1) {
+                        //停止条件就是速度足够小并且距离足够近
+                        clearInterval(obj.timer);
+                        obj.style[attr] = oTarget[attr] + 'px';
+                    } else {
+                        bStop = false;
+                        obj.style[attr] = obj.oLeft + 'px';
+                    }
+
+                }
+
+                if (bStop) {
+                    clearInterval(obj.timer);
+                    if (fn) {
+                        fn();
+                    }
+                }
+            }, 30);
+
+        }
+    </script>
+</head>
+<body>
+<div id="div1"></div>
+<div id="div2"></div>
+<div style="width:1px;height:400px;background:#000;position: absolute;left:300px;top:0;"></div>
+</body>
+</html>

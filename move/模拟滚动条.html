@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #div1 {
+            width: 30px;
+            height: 500px;
+            background: #abcdef;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+
+        #div2 {
+            width: 30px;
+            height: 30px;
+            background: red;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        #div3 {
+            width: 500px;
+            height: 500px;
+            border: solid 1px #abcdef;
+            position: absolute;
+            left: 50px;
+            top: 10px;
+            overflow: hidden;
+        }
+
+        #div4 {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var oDiv1 = document.getElementById("div1");
+            var oDiv2 = document.getElementById("div2");
+            var oDiv3 = document.getElementById("div3");
+            var oDiv4 = document.getElementById("div4");
+
+            var iMaxTop = oDiv1.offsetHeight - oDiv2.offsetHeight;
+
+            oDiv2.onmousedown = function (ev) {
+                var ev = ev || event;
+                var disY = ev.clientY - this.offsetTop;
+
+                if (this.setCapture) {
+                    this.setCapture();
+                }
+
+                document.onmousemove = function (ev) {
+                    var ev = ev || event;
+                    var t = ev.clientY - disY;
+                    if (t > iMaxTop) {
+                        t = iMaxTop;
+                    } else if (t < 0) {
+                        t = 0;
+                    }
+                    oDiv2.style.top = t + 'px';
+
+                    var iScale = t / iMaxTop;
+                    oDiv4.style.top = (oDiv3.clientHeight - oDiv4.offsetHeight) * iScale + 'px';
+
+                };
+
+                document.onmouseup = function () {
+                    document.onmouseup = document.onmousemove = null;
+                    //释放全局捕获
+                    if (this.relaseCapture) {
+                        this.relaseCapture();
+                    }
+                };
+
+                return false;
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div id="div1">
+    <div id="div2"></div>
+</div>
+<div id="div3">
+    <div id="div4">
+        <p>text</p>
+        <p>text2</p>
+        <p>text</p>
+        <p>text3</p>
+        <p>text</p>
+        <p>text</p>
+        <p>text4</p>
+        <p>text</p>
+        <p>text5</p>
+        <p>text</p>
+        <p>text</p>
+        <p>text</p>
+        <p>tex6t</p>
+        <p>text</p>
+        <p>textrtq</p>
+        <p>text</p>
+        <p>text</p>
+        <p>texgadt</p>
+        <p>text</p>
+        <p>texgt</p>
+        <p>text</p>
+        <p>text63</p>
+        <p>text</p>
+        <p>text</p>
+        <p>text787</p>
+        <p>text</p>
+        <p>00</p>
+        <p>te7567xt</p>
+        <p>text</p>
+        <p>te447xt</p>
+        <p>text</p>
+        <p>t4674ext</p>
+        <p>text</p>
+        <p>text</p>
+        <p>te4xt</p>
+        <p>tex76t856</p>
+        <p>te77xt</p>
+        <p>te45xt</p>
+        <p>text</p>
+        <p>te6xt</p>
+        <p>te78ixt</p>
+        <p>tex456t</p>
+        <p>text</p>
+        <p>tex654t</p>
+        <p>text</p>
+        <p>texterj90t</p>
+        <p>text</p>
+        <p>text</p>
+        <p>text</p>
+        <p>text213</p>
+    </div>
+</div>
+</body>
+</html>
