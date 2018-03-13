@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        /**
+         * 1.找一个基准点
+         * 2.建立两个数组，分别存储左边和右边的数
+         * 3.利用递归进行下次比较
+         */
+        function quickSort(arr,boolean) {
+            if (arr.length <= 1) {
+                return arr;
+            }
+            //找到中间的数
+            var num = Math.floor(arr.length / 2);
+            var numVal = arr.splice(num, 1);
+
+            var left = [];
+            var right = [];
+
+            for (var i = 0; i < arr.length; i++) {
+                if (boolean) {
+                    if (arr[i] < numVal) {
+                        left.push(arr[i]);
+                    } else {
+                        right.push(arr[i]);
+                    }
+                } else {
+                    if (arr[i] < numVal) {
+                        right.push(arr[i]);
+                    } else {
+                        left.push(arr[i]);
+                    }
+                }
+            }
+
+            return quickSort(left,boolean).concat([numVal], quickSort(right,boolean));
+
+        }
+
+        alert(quickSort([12, 5, 37, 37, 6, 22, 40],false));
+    </script>
+</head>
+<body>
+
+</body>
+</html>
