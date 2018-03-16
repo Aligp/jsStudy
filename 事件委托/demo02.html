@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        /*
+        * 事件委托：利用冒泡的原理，把事件加到父级或者父级的父级....触发执行效果
+        * 好处：
+        * 1.提高性能
+        * 2.新添加的元素，还会有之前的事件（后续如果再向ul里面添加li时，还会和之前li一样的事件存在）
+        * */
+        window.onload = function () {
+            var oUl = document.getElementById('ul');
+            var aLi = oUl.getElementsByTagName('li');
+            var oInput = document.getElementById('input1');
+            var iNow = 4;
+
+            /**
+             * 不需要循环li的长度，给每个li添加事件
+             * 利用事件源ie:window.event.srcElement 非ie:event.target 找个每个li
+             * 优化了js的性能
+             * @param ev
+             */
+            oUl.onmouseover = function (ev) {
+                var ev = ev || event;
+                var target = ev.srcElement || ev.target;
+                //console.log(target);
+                var targetName = target.tagName.toLowerCase();
+                //console.log(targetName);
+                if (targetName == 'li') {
+                    target.style.background = 'red';
+                }
+            };
+
+            oUl.onmouseout = function (ev) {
+                var ev = ev || event;
+                var target = ev.srcElement || ev.target;
+                var targetName = target.tagName.toLowerCase();
+                if (targetName == 'li') {
+                    target.style.background = '';
+                }
+            };
+
+            oInput.onclick = function(){
+                iNow++;
+                var oLi = document.createElement('li');
+                oLi.innerHTML = 1111 * iNow;
+                oUl.appendChild(oLi);
+
+            };
+
+        }
+    </script>
+</head>
+<body>
+<input  id="input1" type="button" value="添加">
+<ul id="ul">
+    <li>111</li>
+    <li>222</li>
+    <li>333</li>
+    <li>444</li>
+</ul>
+</body>
+</html>

@@ -160,8 +160,19 @@ function quickSort(arr, boolean) {
 
     return quickSort(left, boolean).concat([numVal], quickSort(right, boolean));
 
-<<<<<<< HEAD
 }
-=======
+
+/**
+ * 获取到屏幕的距离
+ * @param obj
+ * @returns {number}
+ */
+function getTop(obj) {
+    var iTop = 0;
+    while (obj) {
+        iTop += obj.offsetTop;
+        obj = obj.offsetParent;
+    }
+    return iTop;
 }
->>>>>>> c1111dfb9a6504df3b63fc6205fa683c19e16fbc
+
