@@ -176,3 +176,16 @@ function getTop(obj) {
     return iTop;
 }
 
+/**
+ * 获取到选中的文字
+ * @returns {string}
+ */
+function selectText() {
+    if (document.selection) { //ie
+        return document.selection.createRange().text;
+    } else { //标准
+        //window.getSelection()是一个对象，转成字符串
+        return window.getSelection().toString()
+    }
+}
+
